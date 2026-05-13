@@ -1,0 +1,31 @@
+<div class="@ClassName" @attributes="AdditionalAttributes">
+    <CbButton Variant="@Variant" Disabled="@Disabled" OnClick="Toggle" aria-haspopup="menu" aria-expanded="@Open">
+        @Label
+    </CbButton>
+    @if (Open)
+    {
+        <div class="cb-menu" role="menu" @onkeydown="OnKeyDown">
+            @ChildContent
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = "Open menu";
+    [Parameter] public CbButtonVariant Variant { get; set; } = CbButtonVariant.Primary;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool Open { get; set; }
+    private string ClassName => new CssBuilder("cb-menu-button").Add(Class).ToString();
+    private void Toggle() => Open = !Open;
+    private void OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+        {
+            Open = false;
+        }
+    }
+}
