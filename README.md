@@ -4,6 +4,10 @@ CarbonBlazor is a Blazor WebAssembly template and Razor Class Library inspired b
 
 This project is not affiliated with, sponsored by, or endorsed by IBM. Carbon Design System and IBM names belong to their respective owners.
 
+## Published Demo
+
+https://carbonblazor.coder-portal-bh.workers.dev/
+
 ## Projects
 
 - `CarbonBlazor`: reusable Razor Class Library with components, tokens, CSS, and JS interop helpers.
