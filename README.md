@@ -87,6 +87,16 @@ git push -u origin master
 git push origin v0.1.0
 ```
 
+## Cloudflare Workers
+
+This repo includes `wrangler.jsonc` for Workers static assets. Use these build settings:
+
+```text
+Build command: npm run build:cloudflare
+Deploy command: npx wrangler deploy
+Root directory: /
+```
+
 ## Research References
 
 - Carbon component catalog: https://carbondesignsystem.com/components/overview/components/

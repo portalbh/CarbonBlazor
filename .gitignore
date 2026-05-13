@@ -12,3 +12,7 @@ coverage/
 *.nupkg
 *.snupkg
 artifacts/
+node_modules/
+publish/
+.dotnet/
+dotnet-install.sh
