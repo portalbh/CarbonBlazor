@@ -1,0 +1,27 @@
+<li class="cb-tree__node" role="treeitem" aria-expanded="@(HasChildren ? Node.Expanded : null)" aria-disabled="@Node.Disabled">
+    <button class="cb-tree__label" type="button" disabled="@Node.Disabled" @onclick="Toggle">
+        <span aria-hidden="true">@(HasChildren ? (Node.Expanded ? "▾" : "▸") : "")</span>
+        <span>@Node.Label</span>
+    </button>
+    @if (HasChildren && Node.Expanded)
+    {
+        <ul role="group">
+            @foreach (var child in Node.Children)
+            {
+                <CbTreeViewNode Node="@child" />
+            }
+        </ul>
+    }
+</li>
+
+@code {
+    [Parameter, EditorRequired] public CbTreeNode Node { get; set; } = new();
+    private bool HasChildren => Node.Children.Count > 0;
+    private void Toggle()
+    {
+        if (HasChildren)
+        {
+            Node.Expanded = !Node.Expanded;
+        }
+    }
+}

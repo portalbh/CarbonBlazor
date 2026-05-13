@@ -1,0 +1,14 @@
+<ul class="@ClassName" role="tree" aria-label="@Label" @attributes="AdditionalAttributes">
+    @foreach (var node in Nodes)
+    {
+        <CbTreeViewNode Node="@node" />
+    }
+</ul>
+
+@code {
+    [Parameter] public string Label { get; set; } = "Tree view";
+    [Parameter] public IReadOnlyList<CbTreeNode> Nodes { get; set; } = [];
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    private string ClassName => new CssBuilder("cb-tree").Add(Class).ToString();
+}
