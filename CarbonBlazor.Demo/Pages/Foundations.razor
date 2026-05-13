@@ -1,0 +1,34 @@
+@page "/foundations"
+
+<PageTitle>Foundations</PageTitle>
+
+<CbBreadcrumb>
+    <CbBreadcrumbItem Href="/">Overview</CbBreadcrumbItem>
+    <CbBreadcrumbItem Current="true">Foundations</CbBreadcrumbItem>
+</CbBreadcrumb>
+
+<h1>Foundations</h1>
+<p class="docs-lede">CarbonBlazor uses role-based tokens for color, spacing, layer, type, focus, support, and motion. Themes change values without changing component markup.</p>
+
+<section class="docs-section">
+    <h2>Themes</h2>
+    <div class="docs-theme-row">
+        @foreach (var theme in Enum.GetValues<CbTheme>())
+        {
+            <CbThemeProvider Theme="@theme" Class="docs-theme-swatch">
+                <strong>@theme</strong>
+                <span>Layer and text tokens</span>
+            </CbThemeProvider>
+        }
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Layering</h2>
+    <CbLayer Level="CbLayerLevel.One" Class="docs-layer-demo">
+        <p>Layer 1</p>
+        <CbLayer Level="CbLayerLevel.Two" Class="docs-layer-demo">
+            <p>Layer 2</p>
+        </CbLayer>
+    </CbLayer>
+</section>

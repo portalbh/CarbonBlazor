@@ -1,3 +1,42 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-@Body
+<CbThemeProvider Theme="_theme">
+    <CbHeader Prefix="Open source" ProductName="CarbonBlazor" @bind-SideNavOpen="_sideNavOpen">
+        <NavContent>
+            <CbHeaderNavLink Href="/" Match="NavLinkMatch.All">Overview</CbHeaderNavLink>
+            <CbHeaderNavLink Href="/components">Components</CbHeaderNavLink>
+            <CbHeaderNavLink Href="/data">Data</CbHeaderNavLink>
+            <CbHeaderNavLink Href="/accessibility">Accessibility</CbHeaderNavLink>
+        </NavContent>
+        <Actions>
+            <CbIconButton Label="Cycle theme" Icon="T" OnClick="CycleTheme" />
+        </Actions>
+    </CbHeader>
+    <CbSideNav @bind-Open="_sideNavOpen">
+        <CbSideNavLink Href="/" Match="NavLinkMatch.All">Overview</CbSideNavLink>
+        <CbSideNavLink Href="/foundations">Foundations</CbSideNavLink>
+        <CbSideNavLink Href="/components">Components</CbSideNavLink>
+        <CbSideNavLink Href="/patterns">Patterns</CbSideNavLink>
+        <CbSideNavLink Href="/data">Data</CbSideNavLink>
+        <CbSideNavLink Href="/accessibility">Accessibility</CbSideNavLink>
+    </CbSideNav>
+    <CbContent>
+        @Body
+    </CbContent>
+</CbThemeProvider>
+
+@code {
+    private CbTheme _theme = CbTheme.White;
+    private bool _sideNavOpen;
+
+    private void CycleTheme()
+    {
+        _theme = _theme switch
+        {
+            CbTheme.White => CbTheme.G10,
+            CbTheme.G10 => CbTheme.G90,
+            CbTheme.G90 => CbTheme.G100,
+            _ => CbTheme.White
+        };
+    }
+}

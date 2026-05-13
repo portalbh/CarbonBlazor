@@ -1,0 +1,19 @@
+@page "/accessibility"
+
+<PageTitle>Accessibility</PageTitle>
+
+<h1>Accessibility</h1>
+<p class="docs-lede">The template follows Carbon-style expectations for keyboard access, semantic roles, visible focus, and responsive behavior.</p>
+
+<CbContainedList Title="Implemented checks">
+    <CbContainedListItem>Buttons use native button semantics and visible focus styles.</CbContainedListItem>
+    <CbContainedListItem>Tabs expose tablist, tab, tabpanel, aria-selected, and arrow-key selection logic.</CbContainedListItem>
+    <CbContainedListItem>Modals expose role=dialog, aria-modal=true, Escape close behavior, and body scroll lock.</CbContainedListItem>
+    <CbContainedListItem>Notifications use status or alert roles based on severity.</CbContainedListItem>
+    <CbContainedListItem>Data controls use tables, row selection labels, sortable header buttons, and responsive pagination.</CbContainedListItem>
+</CbContainedList>
+
+<section class="docs-section">
+    <h2>Test coverage</h2>
+    <CbCodeSnippet Code="dotnet test" />
+</section>

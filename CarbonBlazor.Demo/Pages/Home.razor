@@ -1,7 +1,31 @@
-﻿@page "/"
+@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>CarbonBlazor template</PageTitle>
 
-<h1>Hello, world!</h1>
+<CbBreadcrumb>
+    <CbBreadcrumbItem Current="true">Overview</CbBreadcrumbItem>
+</CbBreadcrumb>
 
-Welcome to your new app.
+<section class="docs-hero">
+    <h1>Carbon-inspired Blazor WebAssembly template</h1>
+    <p>Reusable Blazor components, runtime theme tokens, accessible interaction patterns, and a documentation app for building product interfaces with Carbon-like logic.</p>
+    <CbButtonSet>
+        <CbButton>Browse components</CbButton>
+        <CbButton Variant="CbButtonVariant.Secondary">View foundations</CbButton>
+    </CbButtonSet>
+</section>
+
+<section class="docs-grid">
+    <CbTile>
+        <h2>Reusable library</h2>
+        <p>The CarbonBlazor Razor Class Library owns component APIs, CSS tokens, and JS interop helpers.</p>
+    </CbTile>
+    <CbTile>
+        <h2>Runtime theming</h2>
+        <p>White, Gray 10, Gray 90, and Gray 100 themes are applied with CbThemeProvider and CSS custom properties.</p>
+    </CbTile>
+    <CbTile>
+        <h2>Accessible interactions</h2>
+        <p>Components expose roles, keyboard behavior, focus states, and bindable Blazor parameters.</p>
+    </CbTile>
+</section>

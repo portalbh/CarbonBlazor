@@ -1,0 +1,83 @@
+@page "/components"
+
+<PageTitle>Components</PageTitle>
+
+<CbBreadcrumb>
+    <CbBreadcrumbItem Href="/">Overview</CbBreadcrumbItem>
+    <CbBreadcrumbItem Current="true">Components</CbBreadcrumbItem>
+</CbBreadcrumb>
+
+<h1>Components</h1>
+<p class="docs-lede">The catalog covers action, form, content, feedback, overlay, and structural components with Blazor-friendly parameters.</p>
+
+<section class="docs-section">
+    <h2>Actions</h2>
+    <CbButtonSet>
+        <CbButton>Primary</CbButton>
+        <CbButton Variant="CbButtonVariant.Secondary">Secondary</CbButton>
+        <CbButton Variant="CbButtonVariant.Tertiary">Tertiary</CbButton>
+        <CbButton Variant="CbButtonVariant.Ghost">Ghost</CbButton>
+    </CbButtonSet>
+    <CbMenuButton Label="Menu">
+        <CbMenuItem>First action</CbMenuItem>
+        <CbMenuItem>Second action</CbMenuItem>
+    </CbMenuButton>
+</section>
+
+<section class="docs-section docs-form-grid">
+    <h2>Forms</h2>
+    <CbTextInput Label="Name" Placeholder="Enter a name" @bind-Value="_name" HelperText="Labels remain visible above the field." />
+    <CbTextArea Label="Description" @bind-Value="_description" />
+    <CbSearch @bind-Value="_search" />
+    <CbCheckbox @bind-Value="_checked">Checkbox option</CbCheckbox>
+    <CbToggle Label="Enable feature" @bind-Value="_toggle" />
+    <CbDropdown Label="Dropdown" Items="@Options" @bind-Value="_choice" />
+    <CbNumberInput Label="Number input" @bind-Value="_number" />
+    <CbSlider Label="Slider" @bind-Value="_slider" />
+</section>
+
+<section class="docs-section">
+    <h2>Feedback and content</h2>
+    <CbNotification Kind="CbNotificationKind.Success" Title="Saved" Subtitle="Notification status uses ARIA live regions." />
+    <CbInlineLoading Text="Processing" />
+    <CbProgressBar Label="Progress" Value="65" />
+    <CbTag Kind="CbTagKind.Blue">Tag</CbTag>
+    <CbCodeSnippet Code="<CbButton>Primary</CbButton>" />
+</section>
+
+<section class="docs-section">
+    <h2>Overlays and tabs</h2>
+    <CbButton OnClick="OpenModal">Open modal</CbButton>
+    <CbModal @bind-Open="_modalOpen" Title="Transactional modal">
+        <ChildContent>
+            <p>Modal content is announced through dialog semantics and closes with Escape.</p>
+        </ChildContent>
+        <Footer>
+            <CbButton Variant="CbButtonVariant.Secondary" OnClick="CloseModal">Cancel</CbButton>
+            <CbButton OnClick="CloseModal">Save</CbButton>
+        </Footer>
+    </CbModal>
+    <CbTabs Items="@TabItems" />
+</section>
+
+@code {
+    private string? _name;
+    private string? _description;
+    private string? _search;
+    private bool _checked = true;
+    private bool _toggle;
+    private string? _choice = "Alpha";
+    private double? _number = 42;
+    private double _slider = 40;
+    private bool _modalOpen;
+    private IReadOnlyList<string> Options { get; } = ["Alpha", "Beta", "Gamma"];
+
+    private IReadOnlyList<CbTabItem> TabItems { get; } =
+    [
+        new() { Label = "Usage", Content = builder => builder.AddContent(0, "Use tabs to switch between related views in the same context.") },
+        new() { Label = "Code", Content = builder => builder.AddContent(0, "Tabs expose tablist, tab, and tabpanel roles.") }
+    ];
+
+    private void OpenModal() => _modalOpen = true;
+    private void CloseModal() => _modalOpen = false;
+}
