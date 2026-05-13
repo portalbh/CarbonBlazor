@@ -4,6 +4,14 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PackageId>CarbonBlazor</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>CarbonBlazor contributors</Authors>
+    <Company>CarbonBlazor contributors</Company>
+    <Description>Carbon-inspired reusable Blazor components, runtime themes, and accessibility-focused interaction patterns.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>blazor;webassembly;components;design-system;carbon-inspired</PackageTags>
   </PropertyGroup>
 
 
