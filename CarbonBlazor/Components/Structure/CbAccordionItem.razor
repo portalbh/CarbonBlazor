@@ -1,6 +1,6 @@
 <section class="@ClassName">
     <h3 class="cb-accordion__heading">
-        <button class="cb-accordion__trigger" type="button" aria-expanded="@Open" aria-controls="@PanelId" disabled="@Disabled" @onclick="Toggle">
+        <button class="cb-accordion__trigger" type="button" aria-expanded="@AriaExpanded" aria-controls="@PanelId" disabled="@Disabled" @onclick="Toggle">
             <span aria-hidden="true">@(Open ? "−" : "+")</span>
             <span>@Title</span>
         </button>
@@ -20,6 +20,7 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? Class { get; set; }
     private string ClassName => new CssBuilder("cb-accordion__item").Add(Class).ToString();
+    private string AriaExpanded => Open ? "true" : "false";
     private async Task Toggle()
     {
         Open = !Open;

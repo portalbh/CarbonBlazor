@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="CarbonBlazor.Demo/CarbonBlazor.Demo.csproj" />
+  <Project Path="CarbonBlazor.Tests/CarbonBlazor.Tests.csproj" />
   <Project Path="CarbonBlazor/CarbonBlazor.csproj" />
 </Solution>
