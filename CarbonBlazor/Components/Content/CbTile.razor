@@ -1,0 +1,11 @@
+<section class="@ClassName" tabindex="@(Interactive ? "0" : null)" @attributes="AdditionalAttributes">
+    @ChildContent
+</section>
+
+@code {
+    [Parameter] public bool Interactive { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    private string ClassName => new CssBuilder("cb-tile").Add("cb-tile--interactive", Interactive).Add(Class).ToString();
+}

@@ -1,0 +1,9 @@
+<span class="@ClassName" @attributes="AdditionalAttributes">@ChildContent</span>
+
+@code {
+    [Parameter] public CbTagKind Kind { get; set; } = CbTagKind.Gray;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    private string ClassName => new CssBuilder("cb-tag").Add($"cb-tag--{Kind.ToString().ToLowerInvariant()}").Add(Class).ToString();
+}
