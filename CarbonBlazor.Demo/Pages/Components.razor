@@ -30,24 +30,65 @@
     <CbTextArea Label="Description" @bind-Value="_description" />
     <CbSearch @bind-Value="_search" />
     <CbCheckbox @bind-Value="_checked">Checkbox option</CbCheckbox>
+    <CbRadioGroup Legend="Radio group" @bind-Value="_radioChoice">
+        <CbRadio Value="daily">Daily</CbRadio>
+        <CbRadio Value="weekly">Weekly</CbRadio>
+    </CbRadioGroup>
     <CbToggle Label="Enable feature" @bind-Value="_toggle" />
     <CbDropdown Label="Dropdown" Items="@Options" @bind-Value="_choice" />
+    <CbMultiSelect Label="Multiselect" Items="@Options" @bind-SelectedValues="_selectedOptions" HelperText="Choose more than one option." />
+    <CbFileUploader Label="File uploader" Multiple="true" HelperText="Accepts multiple files." />
     <CbNumberInput Label="Number input" @bind-Value="_number" />
     <CbSlider Label="Slider" @bind-Value="_slider" />
 </section>
 
+<section class="docs-section docs-form-grid">
+    <h2>Validation States</h2>
+    <CbTextInput Label="Invalid text input" Invalid="true" InvalidText="Enter a value before continuing." />
+    <CbSelect Label="Invalid select" Invalid="true" HelperText="Select an option.">
+        <option value="">Choose one</option>
+        <option value="alpha">Alpha</option>
+    </CbSelect>
+    <CbCheckbox Invalid="true">Required checkbox</CbCheckbox>
+</section>
+
 <section class="docs-section">
     <h2>Feedback and content</h2>
-    <CbNotification Kind="CbNotificationKind.Success" Title="Saved" Subtitle="Notification status uses ARIA live regions." />
+    <CbNotification Kind="CbNotificationKind.Success" Title="Saved" Subtitle="Notification status uses ARIA live regions." Closeable="true" />
     <CbInlineLoading Text="Processing" />
     <CbProgressBar Label="Progress" Value="65" />
-    <CbTag Kind="CbTagKind.Blue">Tag</CbTag>
+    <CbTag Kind="CbTagKind.Blue" Dismissible="true">Tag</CbTag>
+    <CbLink Href="https://carbondesignsystem.com">Carbon Design System</CbLink>
+    <CbList>
+        <li>List item one</li>
+        <li>List item two</li>
+    </CbList>
+    <CbContainedList Title="Contained list">
+        <CbContainedListItem>Contained row one</CbContainedListItem>
+        <CbContainedListItem>Contained row two</CbContainedListItem>
+    </CbContainedList>
+    <CbTile Kind="CbTileKind.Clickable" OnClick="@(() => _tileClicked = !_tileClicked)">
+        Clickable tile @(_tileClicked ? "selected" : "ready")
+    </CbTile>
+    <CbTile Kind="CbTileKind.Selectable" @bind-Selected="_tileSelected">
+        Selectable tile
+    </CbTile>
     <CbCodeSnippet Code="<CbButton>Primary</CbButton>" />
 </section>
 
 <section class="docs-section">
     <h2>Overlays and tabs</h2>
     <CbButton OnClick="OpenModal">Open modal</CbButton>
+    <CbPopover>
+        <Trigger>Open popover</Trigger>
+        <ChildContent><p>Popover content appears on click.</p></ChildContent>
+    </CbPopover>
+    <CbTooltip Text="Tooltip content is connected with aria-describedby.">
+        <span>Tooltip trigger</span>
+    </CbTooltip>
+    <CbToggletip Label="More information">
+        <p>Toggletip content uses dialog semantics through the popover primitive.</p>
+    </CbToggletip>
     <CbModal @bind-Open="_modalOpen" Title="Transactional modal">
         <ChildContent>
             <p>Modal content is announced through dialog semantics and closes with Escape.</p>
@@ -58,6 +99,10 @@
         </Footer>
     </CbModal>
     <CbTabs Items="@TabItems" />
+    <CbAccordion>
+        <CbAccordionItem Title="Accordion section">Accordion content can be expanded and collapsed.</CbAccordionItem>
+        <CbAccordionItem Title="Second section">A second panel keeps the structure visible.</CbAccordionItem>
+    </CbAccordion>
 </section>
 
 @code {
@@ -65,11 +110,15 @@
     private string? _description;
     private string? _search;
     private bool _checked = true;
+    private string? _radioChoice = "daily";
     private bool _toggle;
     private string? _choice = "Alpha";
+    private IReadOnlyList<string> _selectedOptions = ["Alpha"];
     private double? _number = 42;
     private double _slider = 40;
     private bool _modalOpen;
+    private bool _tileClicked;
+    private bool _tileSelected;
     private IReadOnlyList<string> Options { get; } = ["Alpha", "Beta", "Gamma"];
 
     private IReadOnlyList<CbTabItem> TabItems { get; } =

@@ -65,6 +65,19 @@ p {
     border: 1px solid var(--cb-border-subtle);
 }
 
+.docs-token-compare {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1rem;
+}
+
+.docs-token-panel {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--cb-border-subtle);
+}
+
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;

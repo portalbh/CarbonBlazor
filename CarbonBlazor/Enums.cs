@@ -50,6 +50,13 @@ public enum CbTagKind
     Teal
 }
 
+public enum CbTileKind
+{
+    Default,
+    Clickable,
+    Selectable
+}
+
 public enum CbModalSize
 {
     ExtraSmall,

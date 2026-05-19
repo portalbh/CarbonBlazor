@@ -1,11 +1,17 @@
 using Bunit;
+using CarbonBlazor.Components.Content;
 using CarbonBlazor.Components.Actions;
 using CarbonBlazor.Components.Data;
 using CarbonBlazor.Components.Feedback;
 using CarbonBlazor.Components.Forms;
 using CarbonBlazor.Components.Foundations;
 using CarbonBlazor.Components.Overlays;
+using CarbonBlazor.Components.Shell;
 using CarbonBlazor.Components.Structure;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CarbonBlazor.Tests;
 
@@ -142,6 +148,255 @@ public sealed class ComponentTests : BunitContext
         cut.Find("button[aria-label='Next page']").Click();
 
         Assert.Equal(2, page);
+    }
+
+    [Fact]
+    public void Pagination_PreviousButtonHasAriaLabel()
+    {
+        var cut = Render<CbPagination>(parameters => parameters
+            .Add(p => p.TotalItems, 30)
+            .Add(p => p.Page, 2));
+
+        Assert.NotNull(cut.Find("button[aria-label='Previous page']"));
+    }
+
+    [Fact]
+    public void Checkbox_BindsCheckedValue()
+    {
+        var value = false;
+        var cut = Render<CbCheckbox>(parameters => parameters
+            .Add(p => p.ValueChanged, changed => value = changed)
+            .AddChildContent("Accept"));
+
+        cut.Find("input").Change(true);
+
+        Assert.True(value);
+    }
+
+    [Fact]
+    public void Toggle_TogglesBoolValue()
+    {
+        var value = false;
+        var cut = Render<CbToggle>(parameters => parameters
+            .Add(p => p.ValueChanged, changed => value = changed)
+            .Add(p => p.Label, "Enabled"));
+
+        cut.Find("input").Change(true);
+
+        Assert.True(value);
+    }
+
+    [Fact]
+    public void TextArea_BindsValue()
+    {
+        string? value = null;
+        var cut = Render<CbTextArea>(parameters => parameters
+            .Add(p => p.Label, "Notes")
+            .Add(p => p.ValueChanged, changed => value = changed));
+
+        cut.Find("textarea").Input("Line one");
+
+        Assert.Equal("Line one", value);
+    }
+
+    [Fact]
+    public void Slider_RaisesValueChanged()
+    {
+        double value = 0;
+        var cut = Render<CbSlider>(parameters => parameters
+            .Add(p => p.ValueChanged, changed => value = changed));
+
+        cut.Find("input").Input("42");
+
+        Assert.Equal(42, value);
+    }
+
+    [Fact]
+    public void Select_BindsSelectedValue()
+    {
+        string? value = null;
+        var cut = Render<CbSelect>(parameters => parameters
+            .Add(p => p.Label, "Choice")
+            .Add(p => p.ValueChanged, changed => value = changed)
+            .AddChildContent("<option value=\"a\">A</option><option value=\"b\">B</option>"));
+
+        cut.Find("select").Change("b");
+
+        Assert.Equal("b", value);
+    }
+
+    [Fact]
+    public void Select_InvalidAddsInvalidClass()
+    {
+        var cut = Render<CbSelect>(parameters => parameters
+            .Add(p => p.Label, "Choice")
+            .Add(p => p.Invalid, true));
+
+        Assert.Contains("cb-select--invalid", cut.Find("select").GetAttribute("class"));
+    }
+
+    [Fact]
+    public void Search_RaisesValueChanged()
+    {
+        string? value = null;
+        var cut = Render<CbSearch>(parameters => parameters
+            .Add(p => p.Label, "Search")
+            .Add(p => p.ValueChanged, changed => value = changed));
+
+        cut.Find("input").Input("carbon");
+
+        Assert.Equal("carbon", value);
+    }
+
+    [Fact]
+    public void Tag_RendersKindClass()
+    {
+        var cut = Render<CbTag>(parameters => parameters
+            .Add(p => p.Kind, CbTagKind.Blue)
+            .AddChildContent("Beta"));
+
+        Assert.Contains("cb-tag--blue", cut.Find(".cb-tag").GetAttribute("class"));
+    }
+
+    [Fact]
+    public void Tag_DismissibleFiresOnDismiss()
+    {
+        var dismissed = false;
+        var cut = Render<CbTag>(parameters => parameters
+            .Add(p => p.Dismissible, true)
+            .Add(p => p.OnDismiss, () => dismissed = true)
+            .AddChildContent("Beta"));
+
+        cut.Find("button[aria-label='Remove tag']").Click();
+
+        Assert.True(dismissed);
+    }
+
+    [Fact]
+    public void ProgressBar_HasProgressbarRole()
+    {
+        var cut = Render<CbProgressBar>(parameters => parameters
+            .Add(p => p.Value, 40)
+            .Add(p => p.Max, 80));
+
+        var progress = cut.Find("[role=progressbar]");
+        Assert.Equal("0", progress.GetAttribute("aria-valuemin"));
+        Assert.Equal("80", progress.GetAttribute("aria-valuemax"));
+        Assert.Equal("40", progress.GetAttribute("aria-valuenow"));
+    }
+
+    [Fact]
+    public void InlineLoading_ShowsLoadingState()
+    {
+        var cut = Render<CbInlineLoading>(parameters => parameters.Add(p => p.Text, "Saving"));
+
+        Assert.Equal("status", cut.Find(".cb-inline-loading").GetAttribute("role"));
+        Assert.Contains("Saving", cut.Markup);
+    }
+
+    [Fact]
+    public void Link_RendersHref()
+    {
+        var cut = Render<CbLink>(parameters => parameters
+            .Add(p => p.Href, "/docs")
+            .AddChildContent("Docs"));
+
+        Assert.Equal("/docs", cut.Find("a").GetAttribute("href"));
+    }
+
+    [Fact]
+    public void Tooltip_HasTooltipRole()
+    {
+        var cut = Render<CbTooltip>(parameters => parameters
+            .Add(p => p.Text, "More detail")
+            .AddChildContent("Help"));
+
+        var tooltip = cut.Find("[role=tooltip]");
+        Assert.Equal("More detail", tooltip.TextContent);
+        Assert.Equal(tooltip.Id, cut.Find(".cb-tooltip__trigger").GetAttribute("aria-describedby"));
+    }
+
+    [Fact]
+    public void Popover_TogglesOpenState()
+    {
+        var cut = Render<CbPopover>(parameters => parameters
+            .Add(p => p.Trigger, builder => builder.AddContent(0, "Open"))
+            .AddChildContent("Panel"));
+
+        cut.Find("button").Click();
+
+        Assert.True(cut.Find("button").HasAttribute("aria-expanded"));
+        Assert.Contains("Panel", cut.Find("[role=dialog]").TextContent);
+    }
+
+    [Fact]
+    public void TreeViewNode_ExpandsOnArrowRight()
+    {
+        var node = new CbTreeNode
+        {
+            Label = "Parent",
+            Children = { new CbTreeNode { Label = "Child" } }
+        };
+        var cut = Render<CbTreeView>(parameters => parameters.Add(p => p.Nodes, [node]));
+
+        cut.Find("button").KeyDown(new KeyboardEventArgs { Key = "ArrowRight" });
+
+        Assert.True(node.Expanded);
+        Assert.Contains("Child", cut.Markup);
+    }
+
+    [Fact]
+    public void Tile_ClickableRaisesOnClick()
+    {
+        var clicked = false;
+        var cut = Render<CbTile>(parameters => parameters
+            .Add(p => p.Kind, CbTileKind.Clickable)
+            .Add(p => p.OnClick, _ => clicked = true)
+            .AddChildContent("Open tile"));
+
+        cut.Find("button.cb-tile").Click();
+
+        Assert.True(clicked);
+    }
+
+    [Fact]
+    public void Tile_SelectableRaisesSelectedChanged()
+    {
+        var selected = false;
+        var cut = Render<CbTile>(parameters => parameters
+            .Add(p => p.Kind, CbTileKind.Selectable)
+            .Add(p => p.SelectedChanged, changed => selected = changed)
+            .AddChildContent("Select tile"));
+
+        cut.Find("input").Change(true);
+
+        Assert.True(selected);
+    }
+
+    [Fact]
+    public void SideNavLink_HasAriaCurrentWhenActive()
+    {
+        Services.GetRequiredService<NavigationManager>().NavigateTo("/components");
+        var cut = Render<CbSideNavLink>(parameters => parameters
+            .Add(p => p.Href, "/components")
+            .Add(p => p.Match, NavLinkMatch.All)
+            .AddChildContent("Components"));
+
+        Assert.Equal("page", cut.Find("a").GetAttribute("aria-current"));
+    }
+
+    [Fact]
+    public void MenuButton_RegistersClickOutsideWhenOpened()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var cut = Render<CbMenuButton>(parameters => parameters
+            .Add(p => p.Label, "Actions")
+            .AddChildContent<CbMenuItem>(item => item.AddChildContent("Archive")));
+
+        cut.Find("button").Click();
+
+        Assert.Contains("Archive", cut.Markup);
+        Assert.Contains(JSInterop.Invocations, invocation => invocation.Identifier == "import");
     }
 
     private sealed record Person(string Name, string Role);
