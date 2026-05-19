@@ -77,6 +77,116 @@
 </section>
 
 <section class="docs-section">
+    <h2>Icons</h2>
+    <p>Common Carbon icons via inline SVG. Use <code>CbIconName</code> to select; set <code>Size</code> for 16/20/24/32 px.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;">
+        @foreach (var icon in _iconSamples)
+        {
+            <span style="display:flex;flex-direction:column;align-items:center;gap:.25rem;font-size:.65rem;color:var(--cb-text-secondary)">
+                <CbIcon Name="@icon" Size="24" />
+                @icon
+            </span>
+        }
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Icon buttons</h2>
+    <div style="display:flex;gap:.5rem;align-items:center;">
+        <CbIconButton Label="Settings"><CbIcon Name="CbIconName.Settings" /></CbIconButton>
+        <CbIconButton Label="Notifications"><CbIcon Name="CbIconName.Notification" /></CbIconButton>
+        <CbIconButton Label="Add"><CbIcon Name="CbIconName.Add" /></CbIconButton>
+        <CbIconButton Label="Search"><CbIcon Name="CbIconName.Search" /></CbIconButton>
+        <CbOverflowMenu Label="More options">
+            <CbMenuItem><CbIcon Name="CbIconName.Edit" /> Edit</CbMenuItem>
+            <CbMenuItem><CbIcon Name="CbIconName.TrashCan" /> Delete</CbMenuItem>
+        </CbOverflowMenu>
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Side nav sections</h2>
+    <p>Use <code>CbSideNavSection</code> with a <code>Title</code> to create labelled groups inside a side navigation.</p>
+    <div style="width:16rem;background:var(--cb-layer);border:1px solid var(--cb-border-subtle);">
+        <CbSideNavSection Title="Departments">
+            <CbSideNavLink Href="#" Icon="🏥">Front Desk</CbSideNavLink>
+            <CbSideNavLink Href="#" Icon="💊">Pharmacy</CbSideNavLink>
+        </CbSideNavSection>
+        <CbSideNavSection Title="Operations">
+            <CbSideNavLink Href="#" Icon="⚙">Administration</CbSideNavLink>
+        </CbSideNavSection>
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Stat tiles and dashboard grid</h2>
+    <p>Use <code>cb-stat-tile</code> inside a <code>cb-grid cb-grid--4</code> to build summary dashboards.</p>
+    <div class="cb-grid cb-grid--4">
+        <div class="cb-stat-tile">
+            <span class="cb-stat-tile__label">Appointments</span>
+            <span class="cb-stat-tile__value">12</span>
+            <span class="cb-stat-tile__description">Scheduled today</span>
+        </div>
+        <div class="cb-stat-tile">
+            <span class="cb-stat-tile__label">Waiting</span>
+            <span class="cb-stat-tile__value">4</span>
+            <span class="cb-stat-tile__description">Not arrived yet</span>
+        </div>
+        <div class="cb-stat-tile">
+            <span class="cb-stat-tile__label">Arrived</span>
+            <span class="cb-stat-tile__value">7</span>
+            <span class="cb-stat-tile__description">Checked in today</span>
+        </div>
+        <div class="cb-stat-tile">
+            <span class="cb-stat-tile__label">Incomplete</span>
+            <span class="cb-stat-tile__value">1</span>
+            <span class="cb-stat-tile__description">Needs registration update</span>
+        </div>
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Filter tags</h2>
+    <p>Use <code>cb-tag--filter</code> and <code>cb-tag--filter-selected</code> for toolbar chip filters.</p>
+    <div class="cb-toolbar__filters">
+        @foreach (var f in _filterOptions)
+        {
+            <span class="cb-tag @(f == _activeFilter ? "cb-tag--filter-selected" : "cb-tag--filter")"
+                  role="button"
+                  aria-selected="@(f == _activeFilter ? "true" : "false")"
+                  @onclick="@(() => _activeFilter = f)">
+                @f
+            </span>
+        }
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Empty state</h2>
+    <div style="border:1px solid var(--cb-border-subtle);">
+        <div class="cb-empty-state">
+            <CbIcon Name="CbIconName.Information" Size="32" Class="cb-empty-state__icon" />
+            <p class="cb-empty-state__title">No patients yet</p>
+            <p class="cb-empty-state__body">Search by National ID, MRN, name, or mobile before creating a new patient.</p>
+        </div>
+    </div>
+</section>
+
+<section class="docs-section">
+    <h2>Page header</h2>
+    <div class="cb-page-header">
+        <div class="cb-page-header__body">
+            <h1 class="cb-page-header__title">Patient Search</h1>
+            <p class="cb-page-header__description">Find a patient and move straight into desk actions without opening the chart first.</p>
+        </div>
+        <div class="cb-page-header__actions">
+            <CbButton Variant="CbButtonVariant.Ghost">Schedule Appointment</CbButton>
+            <CbButton>Continue New Registration</CbButton>
+        </div>
+    </div>
+</section>
+
+<section class="docs-section">
     <h2>Overlays and tabs</h2>
     <CbButton OnClick="OpenModal">Open modal</CbButton>
     <CbPopover>
@@ -120,6 +230,19 @@
     private bool _tileClicked;
     private bool _tileSelected;
     private IReadOnlyList<string> Options { get; } = ["Alpha", "Beta", "Gamma"];
+
+    private IReadOnlyList<CbIconName> _iconSamples { get; } =
+    [
+        CbIconName.Home, CbIconName.Dashboard, CbIconName.Search, CbIconName.Add,
+        CbIconName.Settings, CbIconName.Notification, CbIconName.User, CbIconName.Filter,
+        CbIconName.Calendar, CbIconName.Edit, CbIconName.TrashCan, CbIconName.Close,
+        CbIconName.ChevronDown, CbIconName.ChevronRight, CbIconName.Information,
+        CbIconName.Warning, CbIconName.CheckmarkFilled, CbIconName.ErrorFilled,
+        CbIconName.OverflowMenuVertical, CbIconName.Hospital, CbIconName.Pharmacy, CbIconName.Report
+    ];
+
+    private IReadOnlyList<string> _filterOptions { get; } = ["All", "Waiting", "Arrived", "Missed", "Done"];
+    private string _activeFilter = "All";
 
     private IReadOnlyList<CbTabItem> TabItems { get; } =
     [

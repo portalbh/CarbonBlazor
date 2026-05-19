@@ -2,7 +2,7 @@
     @if (ShowMenuButton)
     {
         <button class="cb-header__button" type="button" aria-label="@MenuLabel" aria-expanded="@SideNavOpen" @onclick="ToggleSideNav">
-            <span aria-hidden="true">☰</span>
+            <CbIcon Name="CbIconName.Menu" Size="20" />
         </button>
     }
     <a class="cb-header__name" href="@Href">

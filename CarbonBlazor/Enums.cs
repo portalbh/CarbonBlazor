@@ -72,3 +72,34 @@ public enum CbProgressStatus
     Complete,
     Invalid
 }
+
+public enum CbIconName
+{
+    Close,
+    Menu,
+    Settings,
+    Notification,
+    User,
+    ChevronDown,
+    ChevronUp,
+    ChevronRight,
+    ChevronLeft,
+    Add,
+    Search,
+    OverflowMenuVertical,
+    OverflowMenuHorizontal,
+    Information,
+    Warning,
+    CheckmarkFilled,
+    ErrorFilled,
+    Filter,
+    Home,
+    Calendar,
+    Dashboard,
+    Edit,
+    TrashCan,
+    DocumentBlank,
+    Pharmacy,
+    Hospital,
+    Report
+}
