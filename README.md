@@ -62,6 +62,22 @@ Use data components:
              Selectable="true" />
 ```
 
+## AI Quickstart
+
+Use these files as the first context for AI coding agents (Cursor, Claude, GitHub Copilot):
+
+- [.cursorrules](.cursorrules): repository-level coding and generation rules.
+- [.ai/components.md](.ai/components.md): component API reference (parameters, required fields, slots).
+- [.ai/tokens.md](.ai/tokens.md): CarbonBlazor token and theme mapping (White, G10, G90, G100, Teal).
+- [.ai/best-practices.md](.ai/best-practices.md): page-generation patterns for CarbonBlazor.Demo.
+
+Recommended prompt pattern for agents:
+
+1. Read `.cursorrules` and `.ai/best-practices.md` first.
+2. Look up component signatures in `.ai/components.md`.
+3. Use `.ai/tokens.md` for any custom styling decisions.
+4. Generate code using CarbonBlazor components and `CbThemeProvider`, not raw HTML control replacements.
+
 ## Included Components
 
 The v0.1.0 catalog includes shell/navigation, buttons, menus, form controls, notifications, loading states, progress, tags, tiles, lists, code snippets, modal, popover, tooltip, toggletip, accordion, tabs, structured list, data table, pagination, and tree view.

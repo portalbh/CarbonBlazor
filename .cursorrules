@@ -1,0 +1,75 @@
+# CarbonBlazor AI Rules
+
+## Mission
+Generate Blazor components and pages that follow IBM Carbon design principles as implemented by CarbonBlazor.
+
+## Project Context
+- This repository is a Razor Class Library plus demo and tests.
+- Component source lives under `CarbonBlazor/Components/*`.
+- Shared enums live in `CarbonBlazor/Enums.cs`.
+- Design tokens and component classes live in `CarbonBlazor/wwwroot/carbon-blazor.css`.
+- JS helpers live in `CarbonBlazor/wwwroot/carbon-blazor.js`.
+- Demo pages live in `CarbonBlazor.Demo/Pages/*`.
+
+## Required Setup For Apps
+- Register CarbonBlazor services in `Program.cs`:
+  - `builder.Services.AddCarbonBlazor();`
+- Wrap app/page layout with `CbThemeProvider`.
+- Use `CbHeader`, `CbSideNav`, and `CbContent` for shell layout in demo-like pages.
+
+## Namespace And Imports
+For demo pages/components, include:
+- `@using CarbonBlazor`
+- `@using CarbonBlazor.Components.Actions`
+- `@using CarbonBlazor.Components.Content`
+- `@using CarbonBlazor.Components.Data`
+- `@using CarbonBlazor.Components.Feedback`
+- `@using CarbonBlazor.Components.Forms`
+- `@using CarbonBlazor.Components.Foundations`
+- `@using CarbonBlazor.Components.Overlays`
+- `@using CarbonBlazor.Components.Shell`
+- `@using CarbonBlazor.Components.Structure`
+
+## Component Authoring Rules
+- Prefer CarbonBlazor components over raw HTML controls in demo pages.
+- Use two-way binding conventions already used by the library:
+  - `@bind-Value` for `Value` + `ValueChanged`
+  - `@bind-Open` for overlay/nav open states
+  - `@bind-SideNavOpen` in `CbHeader`
+- Preserve accessibility labels:
+  - Inputs should always have `Label`.
+  - Icon-only actions should include accessible labels.
+- Use `RenderFragment` slots (`ChildContent`, `Footer`, `Toolbar`, `NavContent`, etc.) instead of custom DOM wrappers.
+- Pass through extra HTML attributes via unmatched attributes only when needed.
+
+## Required Parameters (EditorRequired)
+These are enforced and must be supplied:
+- `CbIconButton.Label`
+- `CbTextInput.Label`
+- `CbTextArea.Label`
+- `CbTreeViewNode.Node`
+
+## CSS And Naming Conventions
+- All CarbonBlazor classes use the `cb-` prefix.
+- Use existing classes and variants (`cb-btn--primary`, `cb-tag--teal`, etc.).
+- Do not invent a new class naming system.
+- Do not hardcode colors for Carbon UI elements; rely on CSS variables.
+- Token names use `--cb-*` custom properties.
+
+## Theme Rules
+- Valid themes: `White`, `G10`, `G90`, `G100`, `Teal` (`CbTheme`).
+- Theme wrapper should set `data-theme` via `CbThemeProvider`.
+- Dark themes (`G90`, `G100`) already define `color-scheme: dark`; do not override arbitrarily.
+
+## Layout Rules For Demo Pages
+- Follow the existing page structure:
+  - Top-level heading (`h1`), short intro paragraph.
+  - Sections grouped in `cb-demo-card`/grid patterns used in demo pages.
+- Keep interactions keyboard-friendly and screen-reader-friendly.
+- Use Carbon spacing rhythm (`--cb-spacing-*`) and avoid ad-hoc spacing values.
+
+## Don’ts
+- Do not replace Carbon components with plain `input`, `button`, or custom div-based controls unless component coverage is missing.
+- Do not remove ARIA attributes from existing components.
+- Do not bypass `CbThemeProvider` for theming.
+- Do not create incompatible variants outside existing enums unless explicitly requested.
