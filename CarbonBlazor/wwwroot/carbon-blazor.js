@@ -73,6 +73,10 @@ export function moveTreeFocus(rootId, delta) {
   items[nextIndex]?.focus();
 }
 
+export function matchesMedia(query) {
+  return window.matchMedia(query).matches;
+}
+
 function getFocusable(root) {
   if (!root) return [];
   return [...root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]

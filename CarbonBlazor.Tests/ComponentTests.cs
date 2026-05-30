@@ -386,6 +386,70 @@ public sealed class ComponentTests : BunitContext
     }
 
     [Fact]
+    public void SideNavLink_RendersIconFromEnumAndKeepsLabel()
+    {
+        var cut = Render<CbSideNavLink>(parameters => parameters
+            .Add(p => p.Href, "/overview")
+            .Add(p => p.IconName, CbIconName.Home)
+            .AddChildContent("Overview"));
+
+        Assert.NotNull(cut.Find(".cb-side-nav__icon"));
+        Assert.Equal("Overview", cut.Find(".cb-side-nav__label").TextContent.Trim());
+    }
+
+    [Fact]
+    public void SideNav_AppliesCollapsedClass()
+    {
+        var cut = Render<CbSideNav>(parameters => parameters
+            .Add(p => p.Open, true)
+            .Add(p => p.Collapsed, true)
+            .AddChildContent("<a class='cb-side-nav__link'>Link</a>"));
+
+        var className = cut.Find("aside").GetAttribute("class") ?? string.Empty;
+        Assert.Contains("cb-side-nav--open", className);
+        Assert.Contains("cb-side-nav--collapsed", className);
+    }
+
+    [Fact]
+    public void SideNav_DoesNotSetAriaHiddenAttribute()
+    {
+        var cut = Render<CbSideNav>(parameters => parameters
+            .Add(p => p.Open, false)
+            .AddChildContent("<a class='cb-side-nav__link'>Link</a>"));
+
+        Assert.False(cut.Find("aside").HasAttribute("aria-hidden"));
+    }
+
+    [Fact]
+    public void Header_DefaultMenuButtonTogglesSideNavOpenState()
+    {
+        var sideNavOpen = false;
+        var cut = Render<CbHeader>(parameters => parameters
+            .Add(p => p.SideNavOpen, sideNavOpen)
+            .Add(p => p.SideNavOpenChanged, value => sideNavOpen = value));
+
+        cut.Find("button.cb-header__button").Click();
+
+        Assert.True(sideNavOpen);
+    }
+
+    [Fact]
+    public void Header_CustomMenuToggleCallbackOverridesDefaultToggle()
+    {
+        var sideNavOpen = false;
+        var callbackTriggered = false;
+        var cut = Render<CbHeader>(parameters => parameters
+            .Add(p => p.SideNavOpen, sideNavOpen)
+            .Add(p => p.SideNavOpenChanged, value => sideNavOpen = value)
+            .Add(p => p.OnMenuToggle, () => callbackTriggered = true));
+
+        cut.Find("button.cb-header__button").Click();
+
+        Assert.True(callbackTriggered);
+        Assert.False(sideNavOpen);
+    }
+
+    [Fact]
     public void MenuButton_RegistersClickOutsideWhenOpened()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

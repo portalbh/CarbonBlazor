@@ -1,7 +1,8 @@
 @inherits LayoutComponentBase
+@inject CarbonBlazorJsModule JsModule
 
 <CbThemeProvider Theme="_theme">
-    <CbHeader Prefix="Open source" ProductName="CarbonBlazor" @bind-SideNavOpen="_sideNavOpen">
+    <CbHeader Prefix="Open source" ProductName="CarbonBlazor" SideNavOpen="_isMobileSideNavOpen" SideNavOpenChanged="OnMobileSideNavChanged" MenuLabel="Toggle navigation" MenuControls="main-side-nav" OnMenuToggle="ToggleNavigationAsync">
         <NavContent>
             <CbHeaderNavLink Href="/" Match="NavLinkMatch.All">Overview</CbHeaderNavLink>
             <CbHeaderNavLink Href="/components">Components</CbHeaderNavLink>
@@ -9,25 +10,28 @@
             <CbHeaderNavLink Href="/accessibility">Accessibility</CbHeaderNavLink>
         </NavContent>
         <Actions>
-            <CbIconButton Label="Cycle theme" Icon="T" OnClick="CycleTheme" />
+            <CbIconButton Label="Cycle theme" OnClick="CycleTheme">
+                <CbIcon Name="CbIconName.Settings" Size="16" />
+            </CbIconButton>
         </Actions>
     </CbHeader>
-    <CbSideNav @bind-Open="_sideNavOpen">
-        <CbSideNavLink Href="/" Match="NavLinkMatch.All">Overview</CbSideNavLink>
-        <CbSideNavLink Href="/foundations">Foundations</CbSideNavLink>
-        <CbSideNavLink Href="/components">Components</CbSideNavLink>
-        <CbSideNavLink Href="/patterns">Patterns</CbSideNavLink>
-        <CbSideNavLink Href="/data">Data</CbSideNavLink>
-        <CbSideNavLink Href="/accessibility">Accessibility</CbSideNavLink>
+    <CbSideNav id="main-side-nav" Open="_isMobileSideNavOpen" OpenChanged="OnMobileSideNavChanged" Collapsed="_isDesktopSideNavCollapsed">
+        <CbSideNavLink Href="/" Match="NavLinkMatch.All" IconName="CbIconName.Home">Overview</CbSideNavLink>
+        <CbSideNavLink Href="/foundations" IconName="CbIconName.Dashboard">Foundations</CbSideNavLink>
+        <CbSideNavLink Href="/components" IconName="CbIconName.DocumentBlank">Components</CbSideNavLink>
+        <CbSideNavLink Href="/patterns" IconName="CbIconName.Report">Patterns</CbSideNavLink>
+        <CbSideNavLink Href="/data" IconName="CbIconName.Filter">Data</CbSideNavLink>
+        <CbSideNavLink Href="/accessibility" IconName="CbIconName.Information">Accessibility</CbSideNavLink>
     </CbSideNav>
-    <CbContent>
+    <CbContent Class="@(_isDesktopSideNavCollapsed ? "cb-content--side-nav-collapsed" : null)">
         @Body
     </CbContent>
 </CbThemeProvider>
 
 @code {
     private CbTheme _theme = CbTheme.White;
-    private bool _sideNavOpen;
+    private bool _isMobileSideNavOpen;
+    private bool _isDesktopSideNavCollapsed;
 
     private void CycleTheme()
     {
@@ -36,7 +40,28 @@
             CbTheme.White => CbTheme.G10,
             CbTheme.G10 => CbTheme.G90,
             CbTheme.G90 => CbTheme.G100,
+            CbTheme.G100 => CbTheme.Teal,
             _ => CbTheme.White
         };
+    }
+
+    private Task OnMobileSideNavChanged(bool isOpen)
+    {
+        _isMobileSideNavOpen = isOpen;
+        return Task.CompletedTask;
+    }
+
+    private async Task ToggleNavigationAsync()
+    {
+        var module = await JsModule.GetModuleAsync();
+        var isDesktop = await module.InvokeAsync<bool>("matchesMedia", "(min-width: 1056px)");
+
+        if (isDesktop)
+        {
+            _isDesktopSideNavCollapsed = !_isDesktopSideNavCollapsed;
+            return;
+        }
+
+        _isMobileSideNavOpen = !_isMobileSideNavOpen;
     }
 }

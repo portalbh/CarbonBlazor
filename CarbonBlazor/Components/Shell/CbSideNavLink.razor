@@ -2,15 +2,20 @@
 @inject NavigationManager Navigation
 
 <NavLink class="cb-side-nav__link" href="@Href" Match="@Match" @attributes="MergedAttributes">
-    @if (!string.IsNullOrWhiteSpace(Icon))
+    @if (IconName.HasValue)
+    {
+        <CbIcon Name="@IconName.Value" Size="16" Class="cb-side-nav__icon" />
+    }
+    else if (!string.IsNullOrWhiteSpace(Icon))
     {
         <span class="cb-side-nav__icon" aria-hidden="true">@Icon</span>
     }
-    <span>@ChildContent</span>
+    <span class="cb-side-nav__label">@ChildContent</span>
 </NavLink>
 
 @code {
     [Parameter] public string Href { get; set; } = "#";
+    [Parameter] public CbIconName? IconName { get; set; }
     [Parameter] public string? Icon { get; set; }
     [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
     [Parameter] public RenderFragment? ChildContent { get; set; }

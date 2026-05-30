@@ -5,7 +5,8 @@ public enum CbTheme
     White,
     G10,
     G90,
-    G100
+    G100,
+    Teal
 }
 
 public enum CbLayerLevel
