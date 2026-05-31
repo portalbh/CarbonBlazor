@@ -1,4 +1,4 @@
-# CarbonBlazor
+# CarbonBlazor - AI Skills
 
 CarbonBlazor is a Blazor WebAssembly template and Razor Class Library inspired by the Carbon Design System. It provides reusable Blazor components, runtime CSS-variable themes, accessibility-focused interaction behavior, and a documentation/demo app.
 
